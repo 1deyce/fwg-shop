@@ -1,0 +1,111 @@
+import { useState } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Header from "../components/UI/Header";
+
+const products = [
+    {
+        id: 1,
+        name: '30 Day Ab Challenge',
+        href: '#',
+        price: 'R150.00',
+        description: `The Ab Challenge that’ll build, sculpt and strengthen your abs in just 30 days!
+            Completely bodyweight, but dumbbells of your choice can be added for extra resistance.`,
+        imageSrc: 'https://d2j6dbq0eux0bg.cloudfront.net/images/100939530/4322223003.jpg',
+        imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
+    },
+    {
+        id: 2,
+        name: '60 Day Ab Challenge',
+        href: '#',
+        price: 'R150.00',
+        description: '',
+        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
+        imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
+    },
+    {
+        id: 3,
+        name: '90 Day Ab Challenge',
+        href: '#',
+        price: 'R150.00',
+        description: '',
+        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
+        imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
+    },
+    {
+        id: 4,
+        name: '30 Day Ab Challenge',
+        href: '#',
+        price: 'R150.00',
+        description: '',
+        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
+        imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
+    },
+]
+
+const Store = () => {
+    const [searchItem, setSearchItem] = useState('');
+    const [filteredItems,  setFilteredItems] = useState(products);
+
+    const handleInputChange = (e) => {
+        const searchTerm = e.target.value;
+        setSearchItem(searchTerm);
+
+        if (searchTerm.trim() === '') {
+            setFilteredItems(products);
+        } else {
+            const filteredTerms = products.filter((product) => {
+                return (
+                    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    product.description.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            });
+            setFilteredItems(filteredTerms);
+        }
+    }
+
+    return (
+        <>
+            <Header />
+            <section className="p-12">
+                <div className="bg-white">
+                    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+                        {/* Search Bar */}
+                        <div className="flex justify-center flex-row items-center mb-20">
+                            <MagnifyingGlassIcon className="size-6 mr-2" />
+                            <input 
+                                type="text"
+                                value={searchItem}
+                                onChange={handleInputChange}
+                                placeholder="Type to search..."
+                                className="w-1/2 h-[50px] p-4 rounded-full bg-gray-100 placeholder:text-black"
+                            />
+                        </div>
+                        <h2 className="sr-only">Products</h2>
+
+                        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                        {filteredItems.map((product) => (
+                            <a 
+                                key={product.id} 
+                                href={product.href} 
+                                className="cursor-pointer"
+                            >
+                                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-h-8 xl:aspect-w-7">
+                                    <img
+                                        alt={product.imageAlt}
+                                        src={product.imageSrc}
+                                        className="h-full w-full object-cover object-center hover:opacity-10 transition duration-300"
+                                    />
+                                    <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+                                    <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
+                                </div>
+                            </a>
+                        ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </>
+    )
+}
+
+export default Store;

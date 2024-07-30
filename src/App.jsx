@@ -1,12 +1,16 @@
-// import Landing from "./components/Landing";
-import Header from "./components/UI/Header";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import Home from "./pages/Home";
+import Store from "./pages/Store";
 
 function App() {
-
   return (
     <>
-      <Header />
-      {/* <Landing /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/store" element={<Store />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
