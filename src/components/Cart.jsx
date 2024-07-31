@@ -1,5 +1,3 @@
-
-
 const Cart = () => {
     return (
         <section className="py-4 relative">
