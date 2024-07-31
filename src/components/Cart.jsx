@@ -23,7 +23,7 @@ const Cart = () => {
                             <h5 
                                 className="font-manrope font-bold text-2xl leading-9 text-gray-900" //product.name
                             >
-                                Round white portable speaker
+                                30 Day Ab Routine
                             </h5>
                             <button className="rounded-full group flex items-center justify-center focus-within:outline-red-500">
                                 <svg 
