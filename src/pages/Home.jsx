@@ -1,6 +1,7 @@
 import "../App.css";
 import { Link } from "react-router-dom";
 import Header from "../components/UI/Header"
+// import Footer from "../components/UI/Footer";
 
 const Home = () => {
     return (
@@ -18,6 +19,7 @@ const Home = () => {
                     </Link>
                 </div>
             </section>
+            {/* <Footer /> */}
         </>
     )
 }

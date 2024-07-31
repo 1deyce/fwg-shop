@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Header from "../components/UI/Header";
+import Footer from "../components/UI/Footer";
+import Cart from "../components/Cart";
 
 const products = [
     {
@@ -67,8 +69,8 @@ const Store = () => {
         <>
             <Header />
             <section className="p-12">
-                <div className="bg-white">
-                    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+                <div className="bg-white flex-wrap xl:flex justify-center">
+                    <div className="basis-2/3 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-10 xl:border-r xl:border-gray-200 sm:mt-20">
                         {/* Search Bar */}
                         <div className="flex justify-center flex-row items-center mb-20">
                             <MagnifyingGlassIcon className="size-6 mr-2" />
@@ -97,13 +99,25 @@ const Store = () => {
                                     />
                                     <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
                                     <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
+                                    <button 
+                                        className="bg-gray-900 text-white p-2 rounded-sm mt-2"
+                                        onClick={""}
+                                    >
+                                        Add to Cart
+                                    </button> 
                                 </div>
                             </a>
                         ))}
                         </div>
                     </div>
+                    <div className="basis-1/3 py-24 relative">
+                        <div className="sm:h-[70vh] overflow-y-auto">
+                            <Cart />
+                        </div>
+                    </div>
                 </div>
             </section>
+            <Footer />
         </>
     )
 }

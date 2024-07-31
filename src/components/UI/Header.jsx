@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Dialog, DialogPanel } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
-import logo from "../../assets/img/logo1.jpg";
+// import { useState } from 'react';
+// import { Dialog, DialogPanel } from '@headlessui/react';
+// import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+// import logo from "../../assets/img/logo1.jpg";
 import "../../App.css";
 
 const Header = () => {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
         <header className="bg-black absolute inset-x-0 top-0 z-50 px-10 max-h-[100px]">
@@ -18,7 +18,7 @@ const Header = () => {
                         <span className="text-white sr-only">Shop FWG</span>Shop <span className="font-semibold">FWG</span> 
                     </a>
                 </div>
-                <div className="flex lg:hidden">
+                {/* <div className="flex lg:hidden">
                     <button
                         type="button"
                         onClick={() => setMobileMenuOpen(true)}
@@ -27,18 +27,10 @@ const Header = () => {
                         <span className="sr-only">Open main menu</span>
                         <Bars3Icon aria-hidden="true" className="text-white h-6 w-6" />
                     </button>
-                </div>  
-                <div className="hidden lg:flex flex-1 justify-end gap-4">
-                    <button>
-                        <MagnifyingGlassIcon className="size-6 text-white" />
-                    </button>
-                    <a href="/" className="text-sm font-semibold leading-6 text-gray-900">
-                        <ShoppingBagIcon className="size-6 text-white"/>
-                    </a>
-                </div>
+                </div>   */}
             </nav>
 
-            <Dialog 
+            {/* <Dialog 
                 open={mobileMenuOpen} 
                 onClose={setMobileMenuOpen} 
                 className="lg:hidden"
@@ -65,26 +57,10 @@ const Header = () => {
                     </div>
                     <div className="mt-6 flow-root">
                     <div className="-my-6 divide-y divide-gray-500/10">
-                        <div className="space-y-2 py-6">
-                                <button
-                                    type="button"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    <ShoppingBagIcon />
-                                </button>
-                        </div>
-                        <div className="py-6 flex items-center flex-col gap-2">
-                            <button className="text-white flex">
-                                <MagnifyingGlassIcon className="size-6 pr-2" /> Search
-                            </button>
-                            <a href="/" className="flex font-semibold text-white">
-                                <ShoppingBagIcon className="size-6 pr-2"/> Cart
-                            </a>
-                        </div>
                     </div>
                     </div>
                 </DialogPanel>
-            </Dialog>
+            </Dialog> */}
         </header>
     )
 }
