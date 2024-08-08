@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { CartContext } from "../context/cartContext";
+import axios from "axios";
 
 const Cart = () => {
   const {
@@ -25,6 +25,12 @@ const Cart = () => {
 
   const handleRemoveFromCart = (item) => {
     removeFromCart(item);
+  };
+
+  const handlePayment = async ({ cartItems }) => {
+    await axios.post("/checkout", {
+      cartItems,
+    });
   };
 
   return (
@@ -156,12 +162,12 @@ const Cart = () => {
           </div>
         </div>
         <div className="max-lg:max-w-lg max-lg:mx-auto mt-6">
-          <Link
+          <button
             className="rounded-md py-4 px-6 bg-black text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-teal-600"
-            to="/checkout"
+            onClick={() => handlePayment(cartItems)}
           >
             Checkout
-          </Link>
+          </button>
         </div>
       </div>
     </section>
