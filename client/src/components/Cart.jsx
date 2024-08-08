@@ -15,9 +15,7 @@ const Cart = () => {
   if (cartItems.length === 0) {
     return (
       <div>
-        <h2 className="font-thin text-3xl">
-          Your Cart is Empty <br />
-        </h2>
+        <h2 className="font-semibold text-3xl">Your Cart is Empty</h2>
         <p className="mt-6">
           Please click &apos;Add to Cart&apos; on the desired product.
         </p>
@@ -45,7 +43,7 @@ const Cart = () => {
               <img
                 src={item.imageSrc}
                 alt={item.name}
-                className="max-lg:w-full lg:w-[180px] rounded-lg"
+                className="max-lg:w-full lg:w-[180px] rounded-xl"
               />
             </div>
             <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">

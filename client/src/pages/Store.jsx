@@ -113,7 +113,7 @@ const Store = () => {
                     <img
                       alt={product.imageAlt}
                       src={product.imageSrc}
-                      className="h-full w-full object-cover object-center hover:opacity-50 transition duration-300"
+                      className="h-full w-full object-cover object-center hover:opacity-50 transition duration-300 rounded-lg"
                     />
                     <h3 className="mt-4 text-sm text-gray-700">
                       {product.name}
