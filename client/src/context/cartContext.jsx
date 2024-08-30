@@ -1,22 +1,21 @@
 import { createContext, useEffect, useState } from "react";
 import Proptypes from "prop-types";
+import axios from "axios";
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
-    // Load cart items from localStorage on initial render
     const storedCartItems = localStorage.getItem("cartItems");
     return storedCartItems ? JSON.parse(storedCartItems) : [];
   });
+  const [paymentRes, setPaymentRes] = useState("");
 
-  // Save cart data
   useEffect(() => {
     console.log("Saving cart data to localStorage:", cartItems);
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Load cart data
   useEffect(() => {
     const storedCartItems = localStorage.getItem("cartItems");
     if (storedCartItems) {
@@ -69,6 +68,21 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const sendCheckoutData = async () => {
+    console.log(cartItems);
+    try {
+      const response = await axios.post("/checkout", cartItems, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setPaymentRes(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("error sending data:", error);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -78,6 +92,8 @@ export const CartProvider = ({ children }) => {
         handleDecrease,
         handleIncrease,
         handleQuantityChange,
+        sendCheckoutData,
+        paymentRes,
       }}
     >
       {children}

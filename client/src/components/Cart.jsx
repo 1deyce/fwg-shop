@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { CartContext } from "../context/cartContext";
-import axios from "axios";
 
 const Cart = () => {
   const {
@@ -10,6 +9,7 @@ const Cart = () => {
     handleDecrease,
     handleIncrease,
     handleQuantityChange,
+    // sendCheckoutData,
   } = useContext(CartContext);
 
   if (cartItems.length === 0) {
@@ -27,11 +27,9 @@ const Cart = () => {
     removeFromCart(item);
   };
 
-  const handlePayment = async ({ cartItems }) => {
-    await axios.post("/checkout", {
-      cartItems,
-    });
-  };
+  // const handlePayment = async () => {
+  //   await sendCheckoutData();
+  // };
 
   return (
     <section className="py-4 relative">
@@ -161,13 +159,47 @@ const Cart = () => {
             </h6>
           </div>
         </div>
+        {/* details:
+            form action: "https://www.payfast.co.za/eng/process"
+            <input type="hidden" name="merchant_id" value="17320049" />
+            <input type="hidden" name="merchant_key" value="0qylizsmzlnqv" />
+        */}
         <div className="max-lg:max-w-lg max-lg:mx-auto mt-6">
-          <button
-            className="rounded-md py-4 px-6 bg-black text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-teal-600"
-            onClick={() => handlePayment(cartItems)}
+          <form
+            action="https://sandbox.payfast.co.za​/eng/process"
+            method="post"
           >
-            Checkout
-          </button>
+            <input type="hidden" name="merchant_id" value="10034730" />
+            <input type="hidden" name="merchant_key" value="y3yqgu6r7gs0g" />
+            <input
+              type="hidden"
+              name="return_url"
+              value="https://localhost:5173/checkout-success"
+            />
+            <input
+              type="hidden"
+              name="cancel_url"
+              value="https://localhost:5173/store"
+            />
+            <input
+              type="hidden"
+              name="amount"
+              value={cartItems
+                .reduce((total, item) => total + item.price * item.quantity, 0)
+                .toFixed(2)}
+            />
+            <input
+              type="hidden"
+              name="item_name"
+              value={cartItems.map((item) => item.name)}
+            />
+            <input
+              type="submit"
+              name="Checkout"
+              value="Checkout"
+              className="rounded-md py-4 px-6 bg-black text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-teal-600"
+            />
+          </form>
         </div>
       </div>
     </section>

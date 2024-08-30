@@ -19,42 +19,6 @@ const products = [
       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
     quantity: 1,
   },
-  {
-    id: 2,
-    name: "60 Day Ab Challenge",
-    href: "#",
-    price: 200,
-    description: "",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: "90 Day Ab Challenge",
-    href: "#",
-    price: 250,
-    description: "",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-    quantity: 1,
-  },
-  {
-    id: 4,
-    name: "30 Day Ab Challenge",
-    href: "#",
-    price: 150,
-    description: "",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-    quantity: 1,
-  },
 ];
 
 const Store = () => {
