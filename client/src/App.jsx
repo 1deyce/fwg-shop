@@ -2,7 +2,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./context/cartContext";
 import Home from "./pages/Home";
 import Store from "./pages/Store";
-import CheckoutSuccess from "./pages/CheckoutSuccess";
+import CheckoutSuccess from "./pages/Confirmation";
 
 function App() {
   return (

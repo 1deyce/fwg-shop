@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Header from "../components/UI/Header";
 import Footer from "../components/UI/Footer";
-import Cart from "../components/Cart";
+import Cart from "../components/UI/Cart";
 import { CartContext } from "../context/cartContext";
 
 const products = [

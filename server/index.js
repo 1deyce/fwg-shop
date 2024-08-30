@@ -1,7 +1,5 @@
 import express from "express";
-import fs from "fs";
 import cors from "cors";
-import https from "https";
 import { checkoutPayment } from "./controllers/paymentController.js";
 
 const port = 8443;
@@ -25,13 +23,6 @@ app.use("/", router);
 
 router.post("/checkout", checkoutPayment);
 
-const options = {
-  key: fs.readFileSync("./private.key"),
-  cert: fs.readFileSync("./certificate.crt"),
-};
-
-const server = https.createServer(options, app);
-
-server.listen(port, () => {
-  console.log(`Server running at https://localhost:${port}`);
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

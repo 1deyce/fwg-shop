@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import { CartContext } from "../context/cartContext";
+import { CartContext } from "../../context/cartContext";
 
 const Cart = () => {
   const {
@@ -9,7 +9,6 @@ const Cart = () => {
     handleDecrease,
     handleIncrease,
     handleQuantityChange,
-    // sendCheckoutData,
   } = useContext(CartContext);
 
   if (cartItems.length === 0) {
@@ -26,10 +25,6 @@ const Cart = () => {
   const handleRemoveFromCart = (item) => {
     removeFromCart(item);
   };
-
-  // const handlePayment = async () => {
-  //   await sendCheckoutData();
-  // };
 
   return (
     <section className="py-4 relative">
@@ -159,27 +154,32 @@ const Cart = () => {
             </h6>
           </div>
         </div>
-        {/* details:
-            form action: "https://www.payfast.co.za/eng/process"
-            <input type="hidden" name="merchant_id" value="17320049" />
-            <input type="hidden" name="merchant_key" value="0qylizsmzlnqv" />
-        */}
-        <div className="max-lg:max-w-lg max-lg:mx-auto mt-6">
-          <form
-            action="https://sandbox.payfast.co.za​/eng/process"
-            method="post"
-          >
+        {/* sandbox details:
+            form action="https://sandbox.payfast.co.za/eng/process"
             <input type="hidden" name="merchant_id" value="10034730" />
             <input type="hidden" name="merchant_key" value="y3yqgu6r7gs0g" />
+        */}
+        <div className="max-lg:max-w-lg max-lg:mx-auto mt-6">
+          <form action="https://www.payfast.co.za/eng/process" method="post">
+            <input
+              type="hidden"
+              name="merchant_id"
+              value={import.meta.env.VITE_MERCHANT_ID}
+            />
+            <input
+              type="hidden"
+              name="merchant_key"
+              value={import.meta.env.VITE_MERCHANT_KEY}
+            />
             <input
               type="hidden"
               name="return_url"
-              value="https://localhost:5173/checkout-success"
+              value={import.meta.env.VITE_RETURN_URL}
             />
             <input
               type="hidden"
               name="cancel_url"
-              value="https://localhost:5173/store"
+              value={import.meta.env.VITE_CANCEL_URL}
             />
             <input
               type="hidden"
