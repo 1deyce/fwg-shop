@@ -26,6 +26,50 @@ const Cart = () => {
     removeFromCart(item);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+
+    localStorage.setItem("customerName", name);
+    localStorage.setItem("customerEmail", email);
+
+    const formData = new FormData(e.target);
+    const returnUrl = import.meta.env.VITE_RETURN_URL;
+    const cancelUrl = import.meta.env.VITE_CANCEL_URL;
+
+    // Prepare data to send to PayFast
+    const data = {
+      merchant_id: import.meta.env.VITE_MERCHANT_ID, //"10034730",
+      merchant_key: import.meta.env.VITE_MERCHANT_KEY, // "y3yqgu6r7gs0g",
+      return_url: returnUrl,
+      cancel_url: cancelUrl,
+      amount: cartItems
+        .reduce((total, item) => total + item.price * item.quantity, 0)
+        .toFixed(2),
+      item_name: cartItems.map((item) => item.name).join(", "),
+      name: formData.get("name"), // Get name
+      email: formData.get("email"), // Get email
+    };
+
+    // Now create a hidden form and submit it to PayFast
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://www.payfast.co.za/eng/process"; //"https://sandbox.payfast.co.za/eng/process";
+
+    Object.keys(data).forEach((key) => {
+      const hiddenField = document.createElement("input");
+      hiddenField.type = "hidden";
+      hiddenField.name = key;
+      hiddenField.value = data[key];
+      form.appendChild(hiddenField);
+    });
+
+    document.body.appendChild(form);
+    form.submit(); // Submit the form
+  };
+
   return (
     <section className="py-4 relative">
       <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
@@ -160,26 +204,48 @@ const Cart = () => {
             <input type="hidden" name="merchant_key" value="y3yqgu6r7gs0g" />
         */}
         <div className="max-lg:max-w-lg max-lg:mx-auto mt-6">
-          <form action="https://www.payfast.co.za/eng/process" method="post">
+          {/* <form action="https://www.payfast.co.za/eng/process" method="post"> */}
+          <form onSubmit={handleSubmit}>
+            Name: {""}
             <input
+              type="Text"
+              name="name"
+              required
+              placeholder=""
+              className="mt-2 mb-4 w-full p-2 border-2 rounded-md"
+            />
+            <br />
+            Email: {""}
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder=""
+              className="mb-10 w-full p-2 border-2 rounded-md"
+            />
+            {/* <input
               type="hidden"
               name="merchant_id"
-              value={import.meta.env.VITE_MERCHANT_ID}
+              // value={import.meta.env.VITE_MERCHANT_ID}
+              value="10034730"
             />
             <input
               type="hidden"
               name="merchant_key"
-              value={import.meta.env.VITE_MERCHANT_KEY}
+              // value={import.meta.env.VITE_MERCHANT_KEY}
+              value="y3yqgu6r7gs0g"
             />
             <input
               type="hidden"
               name="return_url"
-              value={import.meta.env.VITE_RETURN_URL}
+              // value={import.meta.env.VITE_RETURN_URL}
+              value="http://localhost:5173/checkout-success"
             />
             <input
               type="hidden"
               name="cancel_url"
-              value={import.meta.env.VITE_CANCEL_URL}
+              // value={import.meta.env.VITE_CANCEL_URL}
+              value="http://localhost:5173/store"
             />
             <input
               type="hidden"
@@ -192,7 +258,7 @@ const Cart = () => {
               type="hidden"
               name="item_name"
               value={cartItems.map((item) => item.name)}
-            />
+            /> */}
             <input
               type="submit"
               name="Checkout"

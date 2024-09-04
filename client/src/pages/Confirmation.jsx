@@ -1,13 +1,54 @@
 import Header from "../components/UI/Header";
 import Footer from "../components/UI/Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import { CartContext } from "../context/cartContext";
-import { Link } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 
 const CheckoutSuccess = () => {
   const { cartItems } = useContext(CartContext);
   const [purchaseDate, setPurchaseDate] = useState("");
+  const emailSentRef = useRef(false);
+
+  useEffect(() => {
+    const customerName = localStorage.getItem("customerName");
+    const customerEmail = localStorage.getItem("customerEmail");
+    console.log("customer: ", customerName, customerEmail);
+
+    const emailSent = localStorage.getItem("emailSent");
+
+    if (customerEmail && customerName && !emailSentRef.current && !emailSent) {
+      const templateParams = {
+        to_email: customerEmail,
+        from_name: "Shop FWG",
+        to_name: customerName,
+        message: `Thank you for your order! To access your order, please click on the link below: 
+          https://drive.google.com/uc?export=download&id=1lA7QO_gMMtM0xwI8cTArR2fn2wsvr6p9
+        `,
+      };
+
+      emailjs
+        .send(
+          import.meta.env.VITE_SERVICE_ID,
+          import.meta.env.VITE_TEMPLATE_ID,
+          templateParams,
+          { publicKey: import.meta.env.VITE_USER_ID }
+        )
+        .then((response) => {
+          console.log(
+            "Email sent successfully!",
+            response.status,
+            response.text
+          ),
+            localStorage.setItem("emailSent", "true");
+        })
+        .catch((error) => {
+          console.error("Failed to send email:", error);
+        });
+
+      emailSentRef.current = true;
+    }
+  }, []);
 
   useEffect(() => {
     const timestamp = Date.now();
@@ -28,11 +69,8 @@ const CheckoutSuccess = () => {
             Thanks For Your Order!
           </h2>
           <p className="text-slate-950 mb-6 md:mb-8">
-            You can access/download your program by clicking &quot;
-            <span className="underline underline-offset-4 font-semibold">
-              Download Now
-            </span>
-            &quot; below
+            An email has been sent to you! You can access/download your program
+            by clicking the link provided.
           </p>
           <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-black p-6 mb-6 md:mb-8">
             <dl className="sm:flex items-center justify-between gap-4">
@@ -58,15 +96,6 @@ const CheckoutSuccess = () => {
               please email us at{" "}
               <span className="italic">fitnesswithgaby@gmail.com</span>
             </p>
-          </div>
-          <div className="flex justify-center items-center space-x-4">
-            <Link
-              to="https://drive.google.com/uc?export=download&id=1lA7QO_gMMtM0xwI8cTArR2fn2wsvr6p9"
-              href="#"
-              className="bg-white rounded-sm w-auto h-auto py-2 px-6 z-50 font-semibold text-lg transform hover:scale-95 duration-500 hover:ring-2 hover:ring-gray-900 ring-1 ring-black hover:shadow-md hover:shadow-slate-950"
-            >
-              Download Now
-            </Link>
           </div>
         </div>
       </section>

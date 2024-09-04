@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Proptypes from "prop-types";
-import axios from "axios";
+// import axios from "axios";
 
 export const CartContext = createContext();
 
@@ -9,7 +9,6 @@ export const CartProvider = ({ children }) => {
     const storedCartItems = localStorage.getItem("cartItems");
     return storedCartItems ? JSON.parse(storedCartItems) : [];
   });
-  const [paymentRes, setPaymentRes] = useState("");
 
   useEffect(() => {
     console.log("Saving cart data to localStorage:", cartItems);
@@ -68,20 +67,20 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  const sendCheckoutData = async () => {
-    console.log(cartItems);
-    try {
-      const response = await axios.post("/checkout", cartItems, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setPaymentRes(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.log("error sending data:", error);
-    }
-  };
+  // const sendCheckoutData = async () => {
+  //   console.log(cartItems);
+  //   try {
+  //     const response = await axios.post("/checkout", cartItems, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     setPaymentRes(response.data);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log("error sending data:", error);
+  //   }
+  // };
 
   return (
     <CartContext.Provider
@@ -92,8 +91,8 @@ export const CartProvider = ({ children }) => {
         handleDecrease,
         handleIncrease,
         handleQuantityChange,
-        sendCheckoutData,
-        paymentRes,
+        // sendCheckoutData,
+        // paymentRes,
       }}
     >
       {children}
