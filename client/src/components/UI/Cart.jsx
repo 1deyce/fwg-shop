@@ -2,6 +2,12 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { CartContext } from "../../context/cartContext";
 
+{/* sandbox details:
+    form action="https://sandbox.payfast.co.za/eng/process"
+    <input type="hidden" name="merchant_id" value="10034730" />
+    <input type="hidden" name="merchant_key" value="y3yqgu6r7gs0g" />
+*/}
+
 const Cart = () => {
   const {
     cartItems,
@@ -39,24 +45,24 @@ const Cart = () => {
     const returnUrl = import.meta.env.VITE_RETURN_URL;
     const cancelUrl = import.meta.env.VITE_CANCEL_URL;
 
-    // Prepare data to send to PayFast
+    // data to send to PayFast
     const data = {
-      merchant_id: import.meta.env.VITE_MERCHANT_ID, //"10034730",
-      merchant_key: import.meta.env.VITE_MERCHANT_KEY, // "y3yqgu6r7gs0g",
+      merchant_id: import.meta.env.VITE_MERCHANT_ID, //"10034730" 
+      merchant_key: import.meta.env.VITE_MERCHANT_KEY, //"y3yqgu6r7gs0g"
       return_url: returnUrl,
       cancel_url: cancelUrl,
       amount: cartItems
         .reduce((total, item) => total + item.price * item.quantity, 0)
         .toFixed(2),
       item_name: cartItems.map((item) => item.name).join(", "),
-      name: formData.get("name"), // Get name
-      email: formData.get("email"), // Get email
+      name: formData.get("name"),
+      email: formData.get("email"),
     };
 
-    // Now create a hidden form and submit it to PayFast
+    // create a hidden form and submit it to PayFast
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "https://www.payfast.co.za/eng/process"; //"https://sandbox.payfast.co.za/eng/process";
+    form.action = "https://sandbox.payfast.co.za/eng/process"; //"https://www.payfast.co.za/eng/process"; 
 
     Object.keys(data).forEach((key) => {
       const hiddenField = document.createElement("input");
@@ -67,7 +73,7 @@ const Cart = () => {
     });
 
     document.body.appendChild(form);
-    form.submit(); // Submit the form
+    form.submit();
   };
 
   return (
@@ -92,7 +98,7 @@ const Cart = () => {
             <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">
               <div className="flex items-center justify-between w-full mb-4">
                 <h5
-                  className="font-manrope font-bold text-2xl leading-9 text-gray-900" //product.name
+                  className="font-manrope font-bold text-2xl leading-9 text-gray-900"
                 >
                   {item.name}
                 </h5>
@@ -105,7 +111,7 @@ const Cart = () => {
                     height="34"
                     viewBox="0 0 34 34"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg" // remove from cart
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <circle
                       className="fill-red-50 transition-all duration-500 group-hover:fill-red-400"
@@ -198,13 +204,7 @@ const Cart = () => {
             </h6>
           </div>
         </div>
-        {/* sandbox details:
-            form action="https://sandbox.payfast.co.za/eng/process"
-            <input type="hidden" name="merchant_id" value="10034730" />
-            <input type="hidden" name="merchant_key" value="y3yqgu6r7gs0g" />
-        */}
         <div className="max-lg:max-w-lg max-lg:mx-auto mt-6">
-          {/* <form action="https://www.payfast.co.za/eng/process" method="post"> */}
           <form onSubmit={handleSubmit}>
             Name: {""}
             <input
@@ -223,42 +223,6 @@ const Cart = () => {
               placeholder=""
               className="mb-10 w-full p-2 border-2 rounded-md"
             />
-            {/* <input
-              type="hidden"
-              name="merchant_id"
-              // value={import.meta.env.VITE_MERCHANT_ID}
-              value="10034730"
-            />
-            <input
-              type="hidden"
-              name="merchant_key"
-              // value={import.meta.env.VITE_MERCHANT_KEY}
-              value="y3yqgu6r7gs0g"
-            />
-            <input
-              type="hidden"
-              name="return_url"
-              // value={import.meta.env.VITE_RETURN_URL}
-              value="http://localhost:5173/checkout-success"
-            />
-            <input
-              type="hidden"
-              name="cancel_url"
-              // value={import.meta.env.VITE_CANCEL_URL}
-              value="http://localhost:5173/store"
-            />
-            <input
-              type="hidden"
-              name="amount"
-              value={cartItems
-                .reduce((total, item) => total + item.price * item.quantity, 0)
-                .toFixed(2)}
-            />
-            <input
-              type="hidden"
-              name="item_name"
-              value={cartItems.map((item) => item.name)}
-            /> */}
             <input
               type="submit"
               name="Checkout"

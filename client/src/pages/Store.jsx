@@ -55,14 +55,14 @@ const Store = () => {
           <div className="basis-2/3 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-10 xl:border-r xl:border-gray-200 sm:mt-20">
             {/* Search Bar */}
             <div className="flex justify-center flex-row items-center mb-20">
-              <MagnifyingGlassIcon className="size-6 mr-2" />
-              <input
-                type="text"
-                value={searchItem}
-                onChange={handleInputChange}
-                placeholder="Type to search..."
-                className="w-1/2 h-[50px] p-4 rounded-full bg-gray-100 placeholder:text-black"
-              />
+				<MagnifyingGlassIcon className="size-6 mr-2" />
+				<input
+					type="text"
+					value={searchItem}
+					onChange={handleInputChange}
+					placeholder="Type to search..."
+					className="w-1/2 h-[50px] p-4 rounded-full bg-gray-100 placeholder:text-black"
+				/>
             </div>
             <h2 className="sr-only">Products</h2>
 

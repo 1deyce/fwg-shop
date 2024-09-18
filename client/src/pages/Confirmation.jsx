@@ -40,7 +40,11 @@ const CheckoutSuccess = () => {
             response.status,
             response.text
           ),
-            localStorage.setItem("emailSent", "true");
+          localStorage.setItem("emailSent", "true");
+
+          setTimeout(() => {
+            localStorage.removeItem("emailSent");
+          }, 86400000) //24
         })
         .catch((error) => {
           console.error("Failed to send email:", error);
@@ -70,7 +74,7 @@ const CheckoutSuccess = () => {
           </h2>
           <p className="text-slate-950 mb-6 md:mb-8">
             An email has been sent to you! You can access/download your program
-            by clicking the link provided.
+            by clicking the link provided. <span className="font-semibold text-sm text-blue-600 underline">Please wait 24 hours if you wish to place another order.</span> 
           </p>
           <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-black p-6 mb-6 md:mb-8">
             <dl className="sm:flex items-center justify-between gap-4">
