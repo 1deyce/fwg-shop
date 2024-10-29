@@ -72,8 +72,8 @@ export const checkoutPayment = async (req, res) => {
     console.log(newPaymentString);
     try {
       const response = await axios.post(
-        "https://www.payfast.co.za/eng/process",
-        // "https://sandbox.payfast.co.za/eng/process",
+        // "https://www.payfast.co.za/eng/process",
+        "https://sandbox.payfast.co.za/eng/process",
         newPaymentString
       );
       console.log("response: ", response.data); // This will contain the payment ID or error message
