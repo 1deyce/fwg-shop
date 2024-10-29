@@ -46,8 +46,8 @@ const Cart = () => {
         const cancelUrl = import.meta.env.VITE_CANCEL_URL;
 
         const data = {
-            merchant_id: merchantID, //"10034730"
-            merchant_key: merchantKey, //"y3yqgu6r7gs0g"
+            merchant_id: "10034730", // merchantID
+            merchant_key: "y3yqgu6r7gs0g", // merchantKey
             return_url: returnUrl,
             cancel_url: cancelUrl,
             amount: cartItems
@@ -60,7 +60,7 @@ const Cart = () => {
 
         const form = document.createElement("form");
         form.method = "POST";
-        form.action = paymentUrl; //"https://sandbox.payfast.co.za/eng/process"
+        form.action = "https://sandbox.payfast.co.za/eng/process"; // paymentUrl
 
         Object.keys(data).forEach((key) => {
             const hiddenField = document.createElement("input");
