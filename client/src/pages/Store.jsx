@@ -4,22 +4,7 @@ import Header from "../components/UI/Header";
 import Footer from "../components/UI/Footer";
 import Cart from "../components/UI/Cart";
 import { CartContext } from "../context/cartContext";
-
-const products = [
-    {
-        id: 1,
-        name: "30 Day Ab Challenge",
-        href: "#",
-        price: 150,
-        description: `The Ab Challenge that’ll build, sculpt and strengthen your abs in just 30 days!
-            Completely bodyweight, but dumbbells of your choice can be added for extra resistance.`,
-        imageSrc:
-            "https://d2j6dbq0eux0bg.cloudfront.net/images/100939530/4322223003.jpg",
-        imageAlt:
-            "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-        quantity: 1,
-    },
-];
+import { products } from "../utils/products";
 
 const Store = () => {
     const [searchItem, setSearchItem] = useState("");
@@ -70,7 +55,7 @@ const Store = () => {
                         </div>
                         <h2 className="sr-only">Products</h2>
 
-                        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 ">
+                        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                             {filteredItems.map((product) => (
                                 <a
                                     key={product.id}
@@ -83,14 +68,17 @@ const Store = () => {
                                             src={product.imageSrc}
                                             className="h-full w-full object-cover object-center hover:opacity-50 transition duration-300 rounded-lg"
                                         />
-                                        <h3 className="mt-4 text-sm text-gray-700">
+                                        <h3 className="mt-4 text-lg text-gray-700">
                                             {product.name}
                                         </h3>
-                                        <p className="mt-1 text-lg font-medium text-gray-900">
+                                        <p className="my-2 text-[10px] font-medium text-slate-500">
+                                            {product.description}
+                                        </p>
+                                        <p className="my-3 text-lg font-medium rounded max-w-20 mx-auto text-slate-50 bg-black/50">
                                             R{product.price.toFixed(2)}
                                         </p>
                                         <button
-                                            className="bg-gray-900 text-white p-2 rounded-sm mt-2"
+                                            className="bg-black text-white p-2 rounded-md hover:opacity-70 duration-300 mt-2"
                                             onClick={() =>
                                                 handleProductClick(product)
                                             }
