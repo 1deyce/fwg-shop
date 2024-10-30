@@ -14,7 +14,7 @@ const Footer = () => {
                 href="https://www.instagram.com/fitnesswithgaby_/"
                 rel="noreferrer"
                 target="_blank"
-                className="text-gray-500 transition hover:text-[--heading-color]"
+                className="text-gray-500 transition hover:text-white"
                 title="Instagram"
               >
                 <span className="sr-only">Instagram</span>
@@ -38,7 +38,7 @@ const Footer = () => {
                 href="https://www.linkedin.com/in/gabriella-antonia-robertson"
                 rel="noreferrer"
                 target="_blank"
-                className="text-gray-500 transition hover:text-[--heading-color]"
+                className="text-gray-500 transition hover:text-white"
                 title="LinkedIn"
               >
                 <span className="sr-only">LinkedIn</span>
