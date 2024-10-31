@@ -11,11 +11,11 @@ const Header = () => {
         <header className="bg-black absolute inset-x-0 top-0 z-50 px-10 max-h-[100px]">
             <nav 
                 aria-label="Global" 
-                className="flex items-center justify-between p-6 lg:px-8"
+                className="flex items-center justify-center lg:justify-between  p-6 lg:px-8"
             >
-                <div className="flex lg:flex-1">
+                <div className="flex lg:flex-1 ">
                     <a href="/" className="text-xl text-white tracking-wider">
-                        <span className="text-white sr-only">Shop FWG</span>Shop <span className="font-semibold">FWG</span> 
+                        <span className="text-white sr-only ">Shop FWG</span>Shop <span className="font-semibold">FWG</span> 
                     </a>
                 </div>
                 {/* <div className="flex lg:hidden">

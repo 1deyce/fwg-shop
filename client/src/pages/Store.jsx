@@ -40,17 +40,17 @@ const Store = () => {
         <>
             <Header />
             <section className="p-12">
-                <div className="bg-white flex-wrap xl:flex justify-center">
-                    <div className="basis-2/3 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-10 xl:border-r xl:border-gray-200 sm:mt-20">
+                <div className="flex-wrap xl:flex justify-center">
+                    <div className="basis-2/3 mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-10 xl:border-r xl:border-white/10 sm:mt-20">
                         {/* Search Bar */}
                         <div className="flex justify-center flex-row items-center mb-20">
-                            <MagnifyingGlassIcon className="size-6 mr-2" />
+                            <MagnifyingGlassIcon className="size-6 mr-2 text-white" />
                             <input
                                 type="text"
                                 value={searchItem}
                                 onChange={handleInputChange}
                                 placeholder="Type to search..."
-                                className="w-1/2 h-[50px] p-4 rounded-full bg-gray-100 placeholder:text-black"
+                                className="w-1/2 h-[30px] p-4 rounded-full bg-black text-white outline outline-1 outline-white/10 placeholder:text-white/30 placeholder:text-center"
                             />
                         </div>
                         <h2 className="sr-only">Products</h2>
@@ -60,25 +60,29 @@ const Store = () => {
                                 <a
                                     key={product.id}
                                     href={product.href}
-                                    className="cursor-pointer"
+                                    className="cursor-pointer bg-black/75"
                                 >
-                                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-h-8 xl:aspect-w-7 outline outline-1 outline-gray-200 p-4">
+                                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-black/75 xl:aspect-h-8 xl:aspect-w-7 outline outline-1 outline-white/10 p-6">
                                         <img
                                             alt={product.imageAlt}
                                             src={product.imageSrc}
                                             className="h-full w-full object-cover object-center hover:opacity-50 transition duration-300 rounded-lg"
                                         />
-                                        <h3 className="mt-4 text-lg text-gray-700">
+                                        <h3 className="mt-4 text-lg text-white/90">
                                             {product.name}
                                         </h3>
-                                        <p className="my-2 text-[10px] font-medium text-slate-500">
-                                            {product.description}
+                                        <p className="my-4 text-[15px] sm:text-[12px] font-medium text-white/30">
+                                            {product.description.map(
+                                                (line, index) => (
+                                                    <p key={index}>{line}</p>
+                                                ),
+                                            )}
                                         </p>
                                         <p className="my-3 text-lg font-medium rounded max-w-20 mx-auto text-slate-50 bg-black/50">
                                             R{product.price.toFixed(2)}
                                         </p>
                                         <button
-                                            className="bg-black text-white p-2 rounded-md hover:opacity-70 duration-300 mt-2"
+                                            className="bg-black text-white outline outline-1 outline-white/10 p-2 px-4 rounded-md hover:opacity-70 duration-300 mt-1"
                                             onClick={() =>
                                                 handleProductClick(product)
                                             }

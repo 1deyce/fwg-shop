@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import Proptypes from "prop-types";
 import swal from "sweetalert";
+import "../App.css";
 
 export const CartContext = createContext();
 
@@ -37,9 +38,10 @@ export const CartProvider = ({ children }) => {
                 title: "Item already in cart",
                 text: "You have already added this item to your cart. Please select a different item if you still wish to add more items.",
                 icon: "info",
+                className: "bg-black",
                 button: {
                     text: "Continue Shopping",
-                    className: "bg-slate-950 duration-300",
+                    className: "bg-black duration-300",
                 },
             });
         }

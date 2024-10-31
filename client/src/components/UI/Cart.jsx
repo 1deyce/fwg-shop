@@ -15,7 +15,7 @@ const Cart = () => {
 
     if (cartItems.length === 0) {
         return (
-            <div>
+            <div className="text-white">
                 <h2 className="font-semibold text-3xl">Your Cart is Empty</h2>
                 <p className="mt-6">
                     Please click &apos;Add to Cart&apos; on the desired product.
@@ -77,14 +77,14 @@ const Cart = () => {
     return (
         <section className="py-4 relative">
             <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
-                <h2 className="title font-manrope font-bold text-4xl leading-10 mb-8 text-center text-black">
+                <h2 className="title font-manrope font-bold text-4xl leading-10 mb-8 text-center text-white">
                     Your Cart
                 </h2>
                 {/* product card */}
                 {cartItems.map((item) => (
                     <div
                         key={item.id}
-                        className="rounded-3xl border-2 border-gray-200 p-4 lg:p-8 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto gap-y-4"
+                        className="rounded-3xl p-4 lg:p-8 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto gap-y-4 bg-black outline outline-1 outline-white/10"
                     >
                         <div className="col-span-12 lg:col-span-2 img box">
                             <img
@@ -95,7 +95,7 @@ const Cart = () => {
                         </div>
                         <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">
                             <div className="flex items-center justify-between w-full mb-4">
-                                <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">
+                                <h5 className="pl-3 font-manrope font-bold text-2xl leading-9 text-white/90">
                                     {item.name}
                                 </h5>
                                 <button
@@ -127,7 +127,7 @@ const Cart = () => {
                                 </button>
                             </div>
                             <div className="flex justify-between items-center">
-                                <div className="flex items-center gap-4">
+                                {/* <div className="flex items-center gap-4">
                                     {/* <button
                                         className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
                                         onClick={() => handleDecrease(item)}
@@ -149,7 +149,7 @@ const Cart = () => {
                                         />
                                         </svg>
                                     </button> */}
-                                    <input
+                                    {/* <input
                                         type="text"
                                         id="number"
                                         className="border border-gray-200 rounded-full w-10 aspect-square outline-none text-gray-900 font-semibold text-sm py-1.5 px-3 bg-gray-100 text-center"
@@ -159,7 +159,7 @@ const Cart = () => {
                                                 : item.quantity
                                         }
                                         // onChange={() => handleQuantityChange(item)}
-                                    />
+                                    /> */}
                                     {/* <button
                                         className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
                                         onClick={() => handleIncrease(item)}
@@ -180,8 +180,8 @@ const Cart = () => {
                                             strokeLinejoin="round"
                                         />
                                         </svg>
-                                    </button> */}
-                                </div>
+                                    </button> 
+                                </div> */}
                                 <h6 className="text-black font-manrope font-bold text-2xl leading-9 text-right">
                                     R{item.price.toFixed(2)}
                                 </h6>
@@ -190,7 +190,7 @@ const Cart = () => {
                     </div>
                 ))}
                 <div className="flex flex-col md:flex-row items-center md:items-center justify-between lg:px-6 pb-6 max-lg:max-w-lg max-lg:mx-auto">
-                    <h5 className="text-gray-900 font-manrope font-semibold text-2xl leading-9 max-md:mb-4">
+                    <h5 className="text-white/80 font-manrope font-semibold text-2xl leading-9 max-md:mb-4">
                         Subtotal
                     </h5>
                     <div className="flex items-center justify-between gap-5 ">
@@ -206,30 +206,30 @@ const Cart = () => {
                         </h6>
                     </div>
                 </div>
-                <div className="max-lg:max-w-lg max-lg:mx-auto mt-6">
+                <div className="max-lg:max-w-lg max-lg:mx-auto mt-6 text-white">
                     <form onSubmit={handleSubmit}>
-                        Name: {""}
+                        {/* Name: {""} */}
                         <input
                             type="Text"
                             name="name"
                             required
-                            placeholder=""
-                            className="mt-2 mb-4 w-full p-2 border-2 rounded-md"
+                            placeholder="Full name"
+                            className="mt-2 mb-4 w-full p-3 rounded-md placeholder:text-white/30 bg-black outline outline-1 outline-white/10"
                         />
                         <br />
-                        Email: {""}
+                        {/* Email: {""} */}
                         <input
                             type="email"
                             name="email"
                             required
-                            placeholder=""
-                            className="mb-10 w-full p-2 border-2 rounded-md"
+                            placeholder="Email address"
+                            className="mb-10 mt-2 w-full placeholder:text-white/30 p-3 outline outline-1 outline-white/10 rounded-md bg-black"
                         />
                         <input
                             type="submit"
                             name="Checkout"
                             value="Checkout"
-                            className="rounded-md py-4 px-6 bg-black text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-teal-600"
+                            className="rounded-md cursor-pointer py-4 px-6 bg-black/75 text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-teal-600 outline outline-1 outline-white/10"
                         />
                     </form>
                 </div>

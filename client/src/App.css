@@ -9,6 +9,7 @@
 body {
     font-family: var(--font-name);
     overflow-x: hidden;
+    background: black;
 }
 
 .bg-img {
@@ -18,10 +19,27 @@ body {
     background-repeat: no-repeat;
 }
 
-.swal-button {
+.swal-modal {
     background-color: black;
+    border: 1px solid gray;
 }
 
-.swal-button::after {
-    background-color: black;
+.swal-title {
+    color: aliceblue;
+}
+
+.swal-text {
+    padding: 17px;
+    display: block;
+    margin: 22px;
+    text-align: center;
+    color: white;
+}
+
+.swal-button {
+    background-color: #000;
+}
+
+.swal-button:hover {
+    background-color: teal;
 }
