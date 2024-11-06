@@ -124,7 +124,7 @@ const CheckoutSuccess = () => {
                             We&apos;d love to hear from you ! For questions or
                             feedback, please email us at{" "}
                             <span className="italic">
-                                fitnesswithgaby@gmail.com
+                                fitnesswithgabyr@gmail.com
                             </span>
                         </p>
                     </div>
