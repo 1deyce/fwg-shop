@@ -40,7 +40,6 @@ const CheckoutSuccess = () => {
                 to_email: customerEmail,
                 from_name: "Shop FWG",
                 to_name: customerName,
-                // TODO: add logic to match products in cart to products array to get download urls.
                 message: `Thank you for your order! To access your order, please click on the link below: 
                     ${downloadLinks.map((link) => `- ${link.name}: ${link.url}`).join('\n')}
                 `,
