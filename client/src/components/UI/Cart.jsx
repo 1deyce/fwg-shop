@@ -47,7 +47,7 @@ const Cart = () => {
 
         const data = {
             merchant_id: merchantID, //"10034730"
-            merchant_key: merchantKey, //"y3yqgu6r7gs0g", 
+            merchant_key: merchantKey, //"y3yqgu6r7gs0g",
             return_url: returnUrl,
             cancel_url: cancelUrl,
             amount: cartItems
@@ -149,7 +149,7 @@ const Cart = () => {
                                         />
                                         </svg>
                                     </button> */}
-                                    {/* <input
+                                {/* <input
                                         type="text"
                                         id="number"
                                         className="border border-gray-200 rounded-full w-10 aspect-square outline-none text-gray-900 font-semibold text-sm py-1.5 px-3 bg-gray-100 text-center"
@@ -160,7 +160,7 @@ const Cart = () => {
                                         }
                                         // onChange={() => handleQuantityChange(item)}
                                     /> */}
-                                    {/* <button
+                                {/* <button
                                         className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
                                         onClick={() => handleIncrease(item)}
                                     >

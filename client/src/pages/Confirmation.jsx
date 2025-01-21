@@ -41,7 +41,9 @@ const CheckoutSuccess = () => {
                 from_name: "Shop FWG",
                 to_name: customerName,
                 message: `Thank you for your order! To access your order, please click on the link below: 
-                    ${downloadLinks.map((link) => `- ${link.name}: ${link.url}`).join('\n')}
+                    ${downloadLinks
+                        .map((link) => `- ${link.name}: ${link.url}`)
+                        .join("\n")}
                 `,
             };
 
@@ -87,12 +89,12 @@ const CheckoutSuccess = () => {
     return (
         <>
             <Header />
-            <section className="antialiased h-[100vh] flex justify-center items-center">
+            <section className="antialiased h-[100vh] flex justify-center items-center bg-black">
                 <div className="mx-auto max-w-2xl px-4 2xl:px-0">
-                    <h2 className="text-2xl text-black sm:text-5xl font-bold mb-8">
+                    <h2 className="text-2xl text-white sm:text-5xl font-bold mb-8">
                         Thanks For Your Order!
                     </h2>
-                    <p className="text-slate-950 mb-6 md:mb-8">
+                    <p className="text-slate-50 mb-6 md:mb-8">
                         An email has been sent to you! You can access/download
                         your program by clicking the link provided.{" "}
                         <span className="font-semibold text-sm text-blue-600 underline">
@@ -100,7 +102,7 @@ const CheckoutSuccess = () => {
                             order.
                         </span>
                     </p>
-                    <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-black p-6 mb-6 md:mb-8">
+                    <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-white/5 p-6 mb-6 md:mb-8">
                         <dl className="sm:flex items-center justify-between gap-4">
                             <dt className="font-normal mb-1 sm:mb-0 text-slate-500 dark:text-gray-400">
                                 Date
@@ -118,7 +120,7 @@ const CheckoutSuccess = () => {
                             </dd>
                         </dl>
                     </div>
-                    <div className="flex justify-center mt-2 mb-6">
+                    <div className="flex justify-center mt-2 mb-6 text-slate-50">
                         <p>
                             We&apos;d love to hear from you ! For questions or
                             feedback, please email us at{" "}
