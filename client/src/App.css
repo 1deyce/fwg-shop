@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Urbanist:wght@200;300;400;500;600;700;800&display=swap");
+
+:root {
+    margin: 0;
+    text-align: center;
+    --font-name: "Urbanist", sans-serif;
+}
+
+body {
+    font-family: var(--font-name);
+    overflow-x: hidden;
+    background: black;
+}
+
+.bg-img {
+    background-image: url(./assets/img/5.jpg);
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.swal-modal {
+    background-color: black;
+    border: 1px solid gray;
+}
+
+.swal-title {
+    color: aliceblue;
+}
+
+.swal-text {
+    padding: 17px;
+    display: block;
+    margin: 22px;
+    text-align: center;
+    color: white;
+}
+
+.swal-button {
+    background-color: #000;
+}
+
+.swal-button:hover {
+    background-color: teal;
+}
