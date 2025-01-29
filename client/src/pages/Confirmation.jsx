@@ -17,13 +17,15 @@ const CheckoutSuccess = () => {
         const customerEmail = localStorage.getItem("customerEmail");
         console.log("customer: ", customerName, customerEmail);
 
+        const checkoutSuccess = localStorage.getItem("checkoutSuccess");
         const emailSent = localStorage.getItem("emailSent");
 
         if (
             customerEmail &&
             customerName &&
             !emailSentRef.current &&
-            !emailSent
+            !emailSent &&
+            checkoutSuccess
         ) {
             const downloadLinks = cartItems.reduce((links, item) => {
                 const product = products.find((p) => p.id === item.id);
@@ -61,9 +63,10 @@ const CheckoutSuccess = () => {
                         response.text,
                     ),
                         localStorage.setItem("emailSent", "true");
+                        localStorage.removeItem("checkoutSuccess");
                     setTimeout(() => {
                         localStorage.removeItem("emailSent");
-                    }, 86400000); //24
+                    }, 86400000); //24 hrs
                 })
                 .catch((error) => {
                     console.error("Failed to send email:", error);
@@ -74,7 +77,7 @@ const CheckoutSuccess = () => {
 
             emailSentRef.current = true;
         }
-    }, []);
+    }, [cartItems]);
 
     useEffect(() => {
         const timestamp = Date.now();

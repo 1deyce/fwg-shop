@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { CartContext } from "../../context/cartContext";
+import PaystackPop from "@paystack/inline-js";
 
 {
     /* sandbox details:
@@ -9,6 +10,8 @@ import { CartContext } from "../../context/cartContext";
     <input type="hidden" name="merchant_key" value="y3yqgu6r7gs0g" />
 */
 }
+
+const serverURL = import.meta.env.VITE_SERVER_URL;
 
 const Cart = () => {
     const { cartItems, removeFromCart } = useContext(CartContext);
@@ -28,7 +31,7 @@ const Cart = () => {
         removeFromCart(item);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const name = e.target.name.value;
@@ -37,41 +40,26 @@ const Cart = () => {
         localStorage.setItem("customerName", name);
         localStorage.setItem("customerEmail", email);
 
-        const formData = new FormData(e.target);
-
-        const paymentUrl = import.meta.env.VITE_PAYMENT_GATEWAY_URL;
-        const merchantID = import.meta.env.VITE_MERCHANT_ID;
-        const merchantKey = import.meta.env.VITE_MERCHANT_KEY;
-        const returnUrl = import.meta.env.VITE_RETURN_URL;
-        const cancelUrl = import.meta.env.VITE_CANCEL_URL;
-
-        const data = {
-            merchant_id: merchantID, //"10034730"
-            merchant_key: merchantKey, //"y3yqgu6r7gs0g",
-            return_url: returnUrl,
-            cancel_url: cancelUrl,
-            amount: cartItems
-                .reduce((total, item) => total + item.price * item.quantity, 0)
-                .toFixed(2),
-            item_name: cartItems.map((item) => item.name).join(", "),
-            name: formData.get("name"),
-            email: formData.get("email"),
-        };
-
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = paymentUrl; // "https://sandbox.payfast.co.za/eng/process"
-
-        Object.keys(data).forEach((key) => {
-            const hiddenField = document.createElement("input");
-            hiddenField.type = "hidden";
-            hiddenField.name = key;
-            hiddenField.value = data[key];
-            form.appendChild(hiddenField);
+        const response = await fetch(`${serverURL}/api/paystack/initialize`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+                amount: cartItems
+                    .reduce(
+                        (total, item) => total + item.price * item.quantity,
+                        0,
+                    )
+                    .toFixed(2),
+            }),
         });
 
-        document.body.appendChild(form);
-        form.submit();
+        const resData = await response.json();
+
+        const popup = new PaystackPop();
+        popup.resumeTransaction(resData.data.access_code);
     };
 
     return (
@@ -208,7 +196,6 @@ const Cart = () => {
                 </div>
                 <div className="max-lg:max-w-lg max-lg:mx-auto mt-6 text-white">
                     <form onSubmit={handleSubmit}>
-                        {/* Name: {""} */}
                         <input
                             type="Text"
                             name="name"
@@ -217,7 +204,6 @@ const Cart = () => {
                             className="mt-2 mb-4 w-full p-3 rounded-md placeholder:text-white/30 bg-black outline outline-1 outline-white/10"
                         />
                         <br />
-                        {/* Email: {""} */}
                         <input
                             type="email"
                             name="email"

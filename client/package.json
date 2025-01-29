@@ -13,6 +13,7 @@
     "@emailjs/browser": "^4.4.1",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
+    "@paystack/inline-js": "^2.22.1",
     "axios": "^1.7.5",
     "fwg-shop": "file:",
     "prop-types": "^15.8.1",

@@ -1,28 +1,74 @@
 import express from "express";
+import https from "https";
+import bodyParser from "body-parser";
 import cors from "cors";
-import { checkoutPayment } from "./controllers/paymentController.js";
+import dotenv from "dotenv";
 
-const port = 8443;
+dotenv.config();
 
 const app = express();
-const router = express.Router();
+const PORT = process.env.PORT || 8000;
+const secret_key = process.env.SECRET_KEY;
 
+if (secret_key === undefined) {
+  console.error(
+    "SECRET_KEY is not defined. Please set it in your environment variables."
+  );
+}
+
+app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "https://localhost:5173",
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: "*",
     credentials: true,
+    methods: ["GET", "POST"],
   })
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.post("/api/paystack/initialize", (req, res) => {
+  const { email, amount } = req.body;
 
-app.use("/", router);
+  const params = JSON.stringify({
+    email: email,
+    amount: amount,
+  });
 
-router.post("/checkout", checkoutPayment);
+  const options = {
+    hostname: "api.paystack.co",
+    port: 443,
+    path: "/transaction/initialize",
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${secret_key}`,
+      "Content-Type": "application/json",
+    },
+  };
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  const apiReq = https.request(options, (apiRes) => {
+    let data = "";
+
+    apiRes.on("data", (chunk) => {
+      data += chunk;
+    });
+
+    apiRes.on("end", () => {
+      const responseData = JSON.parse(data);
+      console.log("Paystack response:", responseData);
+      res.json(responseData);
+    });
+  });
+
+  apiReq.on("error", (error) => {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while connecting to Paystack." });
+  });
+
+  apiReq.write(params);
+  apiReq.end();
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
