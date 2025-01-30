@@ -11,7 +11,8 @@ import PaystackPop from "@paystack/inline-js";
 */
 }
 
-const serverURL = import.meta.env.VITE_SERVER_URL;
+const public_key = import.meta.env.VITE_PUBLIC_KEY;
+const redirect_url = import.meta.env.VITE_RETURN_URL;
 
 const Cart = () => {
     const { cartItems, removeFromCart } = useContext(CartContext);
@@ -40,26 +41,22 @@ const Cart = () => {
         localStorage.setItem("customerName", name);
         localStorage.setItem("customerEmail", email);
 
-        const response = await fetch(`${serverURL}/api/paystack/initialize`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: email,
-                amount: cartItems
+        const popup = new PaystackPop();
+        popup.checkout({
+            key: public_key,
+            email: email,
+            amount:
+                cartItems
                     .reduce(
                         (total, item) => total + item.price * item.quantity,
                         0,
                     )
-                    .toFixed(2),
-            }),
+                    .toFixed(2) * 100,
+            onSuccess: (transaction) => {
+                localStorage.setItem("checkoutSuccess", "true");
+                window.location.href = "/checkout-success";
+            },
         });
-
-        const resData = await response.json();
-
-        const popup = new PaystackPop();
-        popup.resumeTransaction(resData.data.access_code);
     };
 
     return (
