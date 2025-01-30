@@ -54,7 +54,7 @@ const Cart = () => {
                     .toFixed(2) * 100,
             onSuccess: (transaction) => {
                 localStorage.setItem("checkoutSuccess", "true");
-                window.location.href = "/checkout-success";
+                window.location.href = redirect_url;
             },
         });
     };
