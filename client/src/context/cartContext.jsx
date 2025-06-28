@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Proptypes from "prop-types";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import "../App.css";
 
 export const CartContext = createContext();
@@ -34,16 +34,20 @@ export const CartProvider = ({ children }) => {
             setCartItems([...cartItems, { ...item, quantity: 1 }]);
         } else {
             console.log("This item has already been added to the cart.");
-            swal({
+            Swal.fire({
                 title: "Item already in cart",
                 text: "You have already added this item to your cart. Please select a different item if you still wish to add more items.",
                 icon: "info",
+                color: "grey",
+                iconColor: "red",
                 className: "bg-black",
+                confirmButtonColor: "teal",
+                theme: "dark",
                 button: {
                     text: "Continue Shopping",
                     className: "bg-black duration-300",
                 },
-            });
+            })
         }
     };
 

@@ -5,28 +5,50 @@ import { useContext } from "react";
 import { CartContext } from "../context/cartContext";
 import { products } from "../utils/products";
 import emailjs from "@emailjs/browser";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 const CheckoutSuccess = () => {
     const { cartItems } = useContext(CartContext);
     const [purchaseDate, setPurchaseDate] = useState("");
     const emailSentRef = useRef(false);
 
+    const customerName = localStorage.getItem("customerName");
+    const customerEmail = localStorage.getItem("customerEmail");
+    const transaction_id = localStorage.getItem("transaction_id");
+    const checkoutSuccess = localStorage.getItem("checkoutSuccess");
+    const emailSent = localStorage.getItem("emailSent");
+
+    const orderSuccess = customerEmail && customerName && transaction_id && !emailSent && checkoutSuccess;
+
+    // TODO: Verify transaction:
+    // const https = require('https')
+
+    // const options = {
+    //   hostname: 'api.paystack.co',
+    //   port: 443,
+    //   path: '/transaction/verify/:reference',
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: 'Bearer SECRET_KEY'
+    //   }
+    // }
+
+    // https.request(options, res => {
+    //   let data = ''
+
+    //   res.on('data', (chunk) => {
+    //     data += chunk
+    //   });
+
+    //   res.on('end', () => {
+    //     console.log(JSON.parse(data))
+    //   })
+    // }).on('error', error => {
+    //   console.error(error)
+    // })
+
     useEffect(() => {
-        const customerName = localStorage.getItem("customerName");
-        const customerEmail = localStorage.getItem("customerEmail");
-        console.log("customer: ", customerName, customerEmail);
-
-        const checkoutSuccess = localStorage.getItem("checkoutSuccess");
-        const emailSent = localStorage.getItem("emailSent");
-
-        if (
-            customerEmail &&
-            customerName &&
-            !emailSentRef.current &&
-            !emailSent &&
-            checkoutSuccess
-        ) {
+        if (orderSuccess) {
             const downloadLinks = cartItems.reduce((links, item) => {
                 const product = products.find((p) => p.id === item.id);
                 if (product && product.downloadUrl) {
@@ -42,7 +64,7 @@ const CheckoutSuccess = () => {
                 to_email: customerEmail,
                 from_name: "Shop FWG",
                 to_name: customerName,
-                message: `Thank you for your order! To access your order, please click on the link below: 
+                message: `Thank you for your order! To access your items, please click on the link below: 
                     ${downloadLinks
                         .map((link) => `- ${link.name}: ${link.url}`)
                         .join("\n")}
@@ -70,8 +92,9 @@ const CheckoutSuccess = () => {
                 })
                 .catch((error) => {
                     console.error("Failed to send email:", error);
-                    swal({
+                    Swal.fire({
                         title: "An error occurred while sending your email, please contact us @ fitnesswithgaby@gmail.com if you have not received an email.",
+                        icon: "error"
                     });
                 });
 
@@ -87,7 +110,19 @@ const CheckoutSuccess = () => {
         const formattedDate = date.toLocaleDateString("en-GB", options);
 
         setPurchaseDate(formattedDate);
-    }, []);
+
+        if (orderSuccess) {
+            Swal.fire({
+                title: "Order Confirmed!",
+                text: transaction_id ? `#${transaction_id}` : null,
+                icon: "success",
+                theme: "dark",
+                color: "grey",
+                className: "bg-black",
+                confirmButtonColor: "teal"
+            });
+        }
+    }, [orderSuccess]);
 
     return (
         <>
