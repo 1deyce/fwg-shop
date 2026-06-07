@@ -18,4 +18,10 @@ module.exports = {
       { allowConstantExport: true },
     ],
   },
+  overrides: [
+    {
+      files: ['netlify/functions/**/*.js'],
+      env: { node: true, browser: false },
+    },
+  ],
 }

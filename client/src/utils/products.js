@@ -1,5 +1,3 @@
-const thirtyDayAbChallengeUrl = import.meta.env.VITE_30_DAY_AB_CHALLENGE_URL;
-
 export const products = [
     {
         id: 1,
@@ -14,6 +12,5 @@ export const products = [
             "https://d2j6dbq0eux0bg.cloudfront.net/images/100939530/4322223003.jpg",
         imageAlt: "30 Day Ab Challenge",
         quantity: 1,
-        downloadUrl: thirtyDayAbChallengeUrl,
     },
 ];

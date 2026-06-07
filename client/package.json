@@ -10,12 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
-    "@paystack/inline-js": "^2.22.1",
-    "axios": "^1.7.5",
-    "fwg-shop": "file:",
+    "@netlify/blobs": "^8.1.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

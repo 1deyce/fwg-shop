@@ -15,8 +15,6 @@ const Store = () => {
         const searchTerm = e.target.value;
         setSearchItem(searchTerm);
 
-        console.log(products);
-
         if (searchTerm.trim() === "") {
             setFilteredItems(products);
         } else {
@@ -103,7 +101,7 @@ const Store = () => {
                                 ))
                             ) : (
                                 <p className="text-white text-center mt-4 w-full">
-                                    We couldn't find any products that match
+                                    We couldn&apos;t find any products that match
                                     your search.
                                 </p>
                             )}

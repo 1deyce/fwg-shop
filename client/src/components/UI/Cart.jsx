@@ -1,21 +1,18 @@
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/cartContext";
-import PaystackPop from "@paystack/inline-js";
-
-{
-    /* sandbox details:
-    form action="https://sandbox.payfast.co.za/eng/process"
-    <input type="hidden" name="merchant_id" value="10034730" />
-    <input type="hidden" name="merchant_key" value="y3yqgu6r7gs0g" />
-*/
-}
-
-const public_key = import.meta.env.VITE_PUBLIC_KEY;
-const redirect_url = import.meta.env.VITE_RETURN_URL;
+import Swal from "sweetalert2";
 
 const Cart = () => {
     const { cartItems, removeFromCart } = useContext(CartContext);
+    const [submitting, setSubmitting] = useState(false);
+
+    // Reset on back-forward cache restore (return from PayFast) so the button isn't stuck.
+    useEffect(() => {
+        const reset = () => setSubmitting(false);
+        window.addEventListener("pageshow", reset);
+        return () => window.removeEventListener("pageshow", reset);
+    }, []);
 
     if (cartItems.length === 0) {
         return (
@@ -34,31 +31,51 @@ const Cart = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (submitting) return;
+        setSubmitting(true);
 
         const name = e.target.name.value;
         const email = e.target.email.value;
 
-        localStorage.setItem("customerName", name);
-        localStorage.setItem("customerEmail", email);
+        try {
+            const res = await fetch("/.netlify/functions/create-payment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    items: cartItems.map((item) => ({ id: item.id })),
+                }),
+            });
 
-        const popup = new PaystackPop();
-        popup.checkout({
-            key: public_key,
-            email: email,
-            amount:
-                cartItems
-                    .reduce(
-                        (total, item) => total + item.price * item.quantity,
-                        0,
-                    )
-                    .toFixed(2) * 100,
-            onSuccess: (transaction) => {
-                console.log("transaction:", transaction)
-                localStorage.setItem("transaction_id", transaction.trans);
-                localStorage.setItem("checkoutSuccess", "true");
-                window.location.href = redirect_url;
-            },
-        });
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.error || "Could not start checkout");
+            }
+
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = data.url;
+            Object.entries(data.fields).forEach(([key, value]) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            });
+            document.body.appendChild(form);
+            form.submit();
+        } catch (err) {
+            setSubmitting(false);
+            Swal.fire({
+                title: "Checkout error",
+                text: err.message,
+                icon: "error",
+                theme: "dark",
+                color: "grey",
+                confirmButtonColor: "teal",
+            });
+        }
     };
 
     return (
@@ -67,7 +84,6 @@ const Cart = () => {
                 <h2 className="title font-manrope font-bold text-4xl leading-10 mb-8 text-center text-white">
                     Your Cart
                 </h2>
-                {/* product card */}
                 {cartItems.map((item) => (
                     <div
                         key={item.id}
@@ -114,61 +130,6 @@ const Cart = () => {
                                 </button>
                             </div>
                             <div className="flex justify-between items-center">
-                                {/* <div className="flex items-center gap-4">
-                                    {/* <button
-                                        className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
-                                        onClick={() => handleDecrease(item)}
-                                    >
-                                        <svg
-                                        className="stroke-gray-900 transition-all duration-500 group-hover:stroke-black"
-                                        width="18"
-                                        height="19"
-                                        viewBox="0 0 18 19"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                        <path
-                                            d="M4.5 9.5H13.5"
-                                            stroke=""
-                                            strokeWidth="1.6"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        </svg>
-                                    </button> */}
-                                {/* <input
-                                        type="text"
-                                        id="number"
-                                        className="border border-gray-200 rounded-full w-10 aspect-square outline-none text-gray-900 font-semibold text-sm py-1.5 px-3 bg-gray-100 text-center"
-                                        value={
-                                            item.quantity === 0
-                                                ? removeFromCart(item)
-                                                : item.quantity
-                                        }
-                                        // onChange={() => handleQuantityChange(item)}
-                                    /> */}
-                                {/* <button
-                                        className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
-                                        onClick={() => handleIncrease(item)}
-                                    >
-                                        <svg
-                                        className="stroke-gray-900 transition-all duration-500 group-hover:stroke-black"
-                                        width="18"
-                                        height="19"
-                                        viewBox="0 0 18 19"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                        <path
-                                            d="M3.75 9.5H14.25M9 14.75V4.25"
-                                            stroke=""
-                                            strokeWidth="1.6"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        </svg>
-                                    </button> 
-                                </div> */}
                                 <h6 className="text-black font-manrope font-bold text-2xl leading-9 text-right">
                                     R{item.price.toFixed(2)}
                                 </h6>
@@ -213,8 +174,9 @@ const Cart = () => {
                         <input
                             type="submit"
                             name="Checkout"
-                            value="Checkout"
-                            className="rounded-md cursor-pointer py-4 px-6 bg-black/75 text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-teal-600 outline outline-1 outline-white/10"
+                            value={submitting ? "Redirecting…" : "Checkout"}
+                            disabled={submitting}
+                            className="rounded-md cursor-pointer py-4 px-6 bg-black/75 text-white font-semibold text-lg w-full text-center transition-all duration-500 hover:bg-teal-600 outline outline-1 outline-white/10 disabled:opacity-50"
                         />
                     </form>
                 </div>

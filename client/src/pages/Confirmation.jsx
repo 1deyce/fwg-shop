@@ -1,128 +1,20 @@
 import Header from "../components/UI/Header";
 import Footer from "../components/UI/Footer";
-import { useEffect, useRef, useState } from "react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/cartContext";
-import { products } from "../utils/products";
-import emailjs from "@emailjs/browser";
-import Swal from "sweetalert2";
 
 const CheckoutSuccess = () => {
-    const { cartItems } = useContext(CartContext);
+    const { cartItems, clearCart } = useContext(CartContext);
     const [purchaseDate, setPurchaseDate] = useState("");
-    const emailSentRef = useRef(false);
-
-    const customerName = localStorage.getItem("customerName");
-    const customerEmail = localStorage.getItem("customerEmail");
-    const transaction_id = localStorage.getItem("transaction_id");
-    const checkoutSuccess = localStorage.getItem("checkoutSuccess");
-    const emailSent = localStorage.getItem("emailSent");
-
-    const orderSuccess = customerEmail && customerName && transaction_id && !emailSent && checkoutSuccess;
-
-    // TODO: Verify transaction:
-    // const https = require('https')
-
-    // const options = {
-    //   hostname: 'api.paystack.co',
-    //   port: 443,
-    //   path: '/transaction/verify/:reference',
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: 'Bearer SECRET_KEY'
-    //   }
-    // }
-
-    // https.request(options, res => {
-    //   let data = ''
-
-    //   res.on('data', (chunk) => {
-    //     data += chunk
-    //   });
-
-    //   res.on('end', () => {
-    //     console.log(JSON.parse(data))
-    //   })
-    // }).on('error', error => {
-    //   console.error(error)
-    // })
+    const [orderedItems] = useState(() => cartItems.map((item) => item.name));
 
     useEffect(() => {
-        if (orderSuccess) {
-            const downloadLinks = cartItems.reduce((links, item) => {
-                const product = products.find((p) => p.id === item.id);
-                if (product && product.downloadUrl) {
-                    links.push({
-                        name: product.name,
-                        url: product.downloadUrl,
-                    });
-                }
-                return links;
-            }, []);
-
-            const templateParams = {
-                to_email: customerEmail,
-                from_name: "Shop FWG",
-                to_name: customerName,
-                message: `Thank you for your order! To access your items, please click on the link below: 
-                    ${downloadLinks
-                        .map((link) => `- ${link.name}: ${link.url}`)
-                        .join("\n")}
-                `,
-            };
-
-            emailjs
-                .send(
-                    import.meta.env.VITE_SERVICE_ID,
-                    import.meta.env.VITE_TEMPLATE_ID,
-                    templateParams,
-                    { publicKey: import.meta.env.VITE_USER_ID },
-                )
-                .then((response) => {
-                    console.log(
-                        "Email sent successfully!",
-                        response.status,
-                        response.text,
-                    );
-                    localStorage.setItem("emailSent", "true");
-                    localStorage.removeItem("checkoutSuccess");
-                    setTimeout(() => {
-                        localStorage.removeItem("emailSent");
-                    }, 86400000); //24 hrs
-                })
-                .catch((error) => {
-                    console.error("Failed to send email:", error);
-                    Swal.fire({
-                        title: "An error occurred while sending your email, please contact us @ fitnesswithgaby@gmail.com if you have not received an email.",
-                        icon: "error"
-                    });
-                });
-
-            emailSentRef.current = true;
-        }
-    }, [cartItems]);
-
-    useEffect(() => {
-        const timestamp = Date.now();
-        const date = new Date(timestamp);
-
+        const date = new Date();
         const options = { day: "numeric", month: "long", year: "numeric" };
-        const formattedDate = date.toLocaleDateString("en-GB", options);
-
-        setPurchaseDate(formattedDate);
-
-        if (orderSuccess) {
-            Swal.fire({
-                title: "Order Confirmed!",
-                text: transaction_id ? `#${transaction_id}` : null,
-                icon: "success",
-                theme: "dark",
-                color: "grey",
-                className: "bg-black",
-                confirmButtonColor: "teal"
-            });
-        }
-    }, [orderSuccess]);
+        setPurchaseDate(date.toLocaleDateString("en-GB", options));
+        clearCart();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -133,12 +25,10 @@ const CheckoutSuccess = () => {
                         Thanks For Your Order!
                     </h2>
                     <p className="text-slate-50 mb-6 md:mb-8">
-                        An email has been sent to you! You can access/download
-                        your program by clicking the link provided.{" "}
-                        {/* <span className="font-semibold text-sm text-blue-600 underline">
-                            Please wait 24 hours if you wish to place another
-                            order.
-                        </span> */}
+                        Once your payment is confirmed, an email with your
+                        download link will be sent to you. This can take a few
+                        minutes. If it doesn&apos;t arrive, please check your
+                        spam folder.
                     </p>
                     <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-white/5 p-6 mb-6 md:mb-8">
                         <dl className="sm:flex items-center justify-between gap-4">
@@ -149,14 +39,16 @@ const CheckoutSuccess = () => {
                                 {purchaseDate}
                             </dd>
                         </dl>
-                        <dl className="sm:flex items-center justify-between gap-4">
-                            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
-                                Order Item/s
-                            </dt>
-                            <dd className="font-medium text-gray-900 dark:text-white sm:text-end">
-                                {cartItems.map((item) => item.name)}
-                            </dd>
-                        </dl>
+                        {orderedItems.length > 0 && (
+                            <dl className="sm:flex items-center justify-between gap-4">
+                                <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
+                                    Order Item/s
+                                </dt>
+                                <dd className="font-medium text-gray-900 dark:text-white sm:text-end">
+                                    {orderedItems.join(", ")}
+                                </dd>
+                            </dl>
+                        )}
                     </div>
                     <div className="flex justify-center mt-2 mb-6 text-slate-50">
                         <p>

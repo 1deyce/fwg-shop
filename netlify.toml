@@ -1,0 +1,21 @@
+# Netlify configuration for fwg-shop
+# The React app lives in client/. Serverless functions live in client/netlify/functions.
+
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  # Relative to `base`, so this resolves to client/netlify/functions
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# SPA fallback (mirrors client/public/_redirects) — function routes are matched first
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

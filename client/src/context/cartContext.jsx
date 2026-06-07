@@ -12,20 +12,8 @@ export const CartProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        console.log("Saving cart data to localStorage:", cartItems);
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }, [cartItems]);
-
-    useEffect(() => {
-        const storedCartItems = localStorage.getItem("cartItems");
-        if (storedCartItems) {
-            console.log(
-                "Loading cart data from localStorage:",
-                JSON.parse(storedCartItems),
-            );
-            setCartItems(JSON.parse(storedCartItems));
-        }
-    }, []);
 
     const addToCart = (item) => {
         const isItemInCart = cartItems.find((i) => i.id === item.id);
@@ -33,7 +21,6 @@ export const CartProvider = ({ children }) => {
         if (!isItemInCart) {
             setCartItems([...cartItems, { ...item, quantity: 1 }]);
         } else {
-            console.log("This item has already been added to the cart.");
             Swal.fire({
                 title: "Item already in cart",
                 text: "You have already added this item to your cart. Please select a different item if you still wish to add more items.",
@@ -47,7 +34,7 @@ export const CartProvider = ({ children }) => {
                     text: "Continue Shopping",
                     className: "bg-black duration-300",
                 },
-            })
+            });
         }
     };
 
@@ -55,44 +42,7 @@ export const CartProvider = ({ children }) => {
         setCartItems(cartItems.filter((i) => i.id !== item.id));
     };
 
-    // const handleDecrease = (item) => {
-    //   setCartItems(
-    //     cartItems.map((i) =>
-    //       i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i
-    //     )
-    //   );
-    // };
-
-    // const handleIncrease = (item) => {
-    //   setCartItems(
-    //     cartItems.map((i) =>
-    //       i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-    //     )
-    //   );
-    // };
-
-    // const handleQuantityChange = (item, newQuantity) => {
-    //   setCartItems(
-    //     cartItems.map((i) =>
-    //       i.id === item.id ? { ...i, quantity: newQuantity } : i
-    //     )
-    //   );
-    // };
-
-    // const sendCheckoutData = async () => {
-    //   console.log(cartItems);
-    //   try {
-    //     const response = await axios.post("/checkout", cartItems, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     });
-    //     setPaymentRes(response.data);
-    //     console.log(response.data);
-    //   } catch (error) {
-    //     console.log("error sending data:", error);
-    //   }
-    // };
+    const clearCart = () => setCartItems([]);
 
     return (
         <CartContext.Provider
@@ -100,11 +50,7 @@ export const CartProvider = ({ children }) => {
                 cartItems,
                 addToCart,
                 removeFromCart,
-                // handleDecrease,
-                // handleIncrease,
-                // handleQuantityChange,
-                // sendCheckoutData,
-                // paymentRes,
+                clearCart,
             }}
         >
             {children}
