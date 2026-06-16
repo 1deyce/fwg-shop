@@ -2,7 +2,9 @@ export const catalog = {
     1: {
         name: "30 Day Ab Challenge",
         price: 150,
-        downloadUrl: process.env.PRODUCT_30_DAY_AB_CHALLENGE_URL,
+        // Object key in the "products" Netlify Blobs store (and the filename
+        // the customer receives as an attachment).
+        file: "30-day-ab-challenge.pdf",
     },
 };
 
@@ -21,9 +23,9 @@ export function priceCart(ids) {
     return { items, total };
 }
 
-export function downloadLinksFor(ids) {
+export function filesFor(ids) {
     return (ids || [])
         .map((id) => catalog[id])
-        .filter((product) => product && product.downloadUrl)
-        .map((product) => ({ name: product.name, url: product.downloadUrl }));
+        .filter((product) => product && product.file)
+        .map((product) => ({ name: product.name, file: product.file }));
 }

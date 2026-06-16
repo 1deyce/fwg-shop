@@ -51,10 +51,7 @@ export const handler = async (event) => {
 
     const mPaymentId = crypto.randomUUID();
     const amount = cart.total.toFixed(2);
-    const itemName =
-        cart.items.length === 1
-            ? cart.items[0].name
-            : `Shop FWG order (${cart.items.length} items)`;
+    const itemDescription = cart.items.map((item) => item.name).join(", ");
 
     const fields = {
         merchant_id: merchantId,
@@ -66,7 +63,8 @@ export const handler = async (event) => {
         email_address: email,
         m_payment_id: mPaymentId,
         amount,
-        item_name: itemName.slice(0, 100),
+        item_name: "Shop FWG",
+        item_description: itemDescription.slice(0, 255),
         custom_str1: cart.items.map((item) => item.id).join(","),
     };
 

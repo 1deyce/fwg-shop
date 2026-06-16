@@ -1,7 +1,8 @@
 import { connectLambda, getStore } from "@netlify/blobs";
-import { downloadLinksFor } from "./_lib/catalog.js";
+import { filesFor } from "./_lib/catalog.js";
 import { sendDownloadEmail } from "./_lib/email.js";
 import {
+    SANDBOX,
     parseOrderedForm,
     validateWithPayfast,
     verifySignature,
@@ -58,11 +59,47 @@ export const handler = async (event) => {
         return ok();
     }
 
-    const links = downloadLinksFor(order.ids);
+    let attachments;
+    try {
+        const products = getStore("products");
+        attachments = [];
+        for (const { file } of filesFor(order.ids)) {
+            const buf = await products.get(file, { type: "arrayBuffer" });
+            if (!buf) {
+                throw new Error(`Product file missing from blobs: ${file}`);
+            }
+            attachments.push({
+                filename: file,
+                contentBase64: Buffer.from(buf).toString("base64"),
+            });
+        }
+    } catch (err) {
+        console.error("Could not load product files, will retry on next ITN:", err);
+        return { statusCode: 500, body: "Product files unavailable" };
+    }
+
+    // In sandbox, redirect the email to the merchant so test orders (and any
+    // purchase attempts) land in your inbox. In live mode, BCC the merchant so
+    // there's a record of every real order.
+    const notifyEmail = process.env.ORDER_NOTIFY_EMAIL;
+    const recipient = SANDBOX ? notifyEmail : order.email;
+    if (!recipient) {
+        console.error("No recipient: set ORDER_NOTIFY_EMAIL (required in sandbox)");
+        await orders.setJSON(data.m_payment_id, { ...order, fulfilled: false });
+        return { statusCode: 500, body: "Email recipient not configured" };
+    }
+
     await orders.setJSON(data.m_payment_id, { ...order, fulfilled: true });
 
     try {
-        await sendDownloadEmail({ to: order.email, name: order.name, links });
+        await sendDownloadEmail({
+            to: recipient,
+            name: order.name,
+            attachments,
+            bcc: SANDBOX ? undefined : notifyEmail,
+            sandbox: SANDBOX,
+            customerEmail: order.email,
+        });
     } catch (err) {
         console.error("Email send failed, will retry on next ITN:", err);
         await orders.setJSON(data.m_payment_id, { ...order, fulfilled: false });
