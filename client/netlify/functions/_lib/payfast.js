@@ -20,8 +20,12 @@ function pfEncode(value) {
 }
 
 function buildParamString(pairs, passphrase) {
+    // PayFast includes every posted field in the ITN signature — even empty
+    // ones (custom_str2-5, custom_int1-5, name_last) — so we must NOT drop empty
+    // values, only the signature field itself. Outbound signing is unaffected
+    // since create-payment never sends empty fields.
     let str = pairs
-        .filter(([key, value]) => key !== "signature" && value !== "" && value != null)
+        .filter(([key, value]) => key !== "signature" && value != null)
         .map(([key, value]) => `${key}=${pfEncode(value)}`)
         .join("&");
     if (passphrase) {
