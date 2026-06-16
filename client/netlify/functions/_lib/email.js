@@ -23,7 +23,7 @@ export async function sendDownloadEmail({
     }
 
     const greeting = name ? `Hi ${name},` : "Hi,";
-    const noun = attachments.length === 1 ? "guide is" : "guides are";
+    const noun = attachments.length === 1 ? "plan is" : "plans are";
 
     const html = sandbox
         ? `<p><strong>[SANDBOX]</strong> Test order — this would normally go to ` +
@@ -31,7 +31,7 @@ export async function sendDownloadEmail({
           `<p>Name: ${name || "(none)"}<br/>The ${noun} attached.</p>`
         : `<p>${greeting}</p>` +
           `<p>Thank you for your order! Your ${noun} attached to this email.</p>` +
-          `<p>Enjoy,<br/>Shop FWG</p>`;
+          `<p><em>Yours in fitness,<br/>Gaby</em></p>`;
 
     const subject = sandbox
         ? `[SANDBOX] Shop FWG order — ${customerEmail || "unknown"}`
