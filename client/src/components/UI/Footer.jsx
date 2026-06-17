@@ -9,7 +9,7 @@ const Footer = () => {
             © {year} - Shop FWG. All Rights Reserved.
           </p>
           <ul className="flex justify-center gap-3 lg:justify-end mb-4">
-            <li>
+            {/* <li>
               <a
                 href="https://www.instagram.com/fitnesswithgaby_/"
                 rel="noreferrer"
@@ -32,7 +32,7 @@ const Footer = () => {
                   />
                 </svg>
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="https://www.linkedin.com/in/gabriella-antonia-robertson"
